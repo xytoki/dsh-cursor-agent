@@ -1,0 +1,81 @@
+# The `cursor-agent` agent preset: session-world seams for the
+# dsh-cursor-agent adapter's native Cursor exec plane.
+#
+# The Cursor server owns the model's system prompt; this preset exists so the
+# session is composed with the execution seams the adapter calls through
+# `agents.get(sessionId).ctx` (fs, subprocess, shell, jobs, approval,
+# sandboxPolicy) plus the AskQuestion bridge and the todos projection.
+# Nothing here leaks to other presets. Join shims reuse Cursor tool names
+# so DSH can card native execs; they are not injected as MCP tools.
+#
+# The `cursor-tools` row re-mounts dsh-cursor-agent itself; its apply()
+# reads `config.plane: preset` and attaches the jobs controller, harness
+# identity section, and `todos` session projection (the official dsh-tool-todo
+# is NOT mounted — its todo_write would collide with the display-frame card
+# path; no provide — a preset row publishing a process-global service fails
+# the whole mount). At install time the plugin rewrites the placeholder
+# relative name into a file:// URL pointing at the profile-installed package:
+# preset rows resolve bare package names from the harness base, which a
+# profile install cannot reach.
+
+- id: persona
+  name: '@deepseek-ai/dsh-persona'
+  config:
+    prefix: >-
+      You are a coding agent powered by the {{model}} model. Your working directory is {{cwd}}.
+      The harness provides three sandbox modes for your shell commands: read-only, workspace-write, and danger-full-access.
+      When a shell command needs wider permissions than the standing mode, do not retry blindly — ask the user to approve or switch modes.
+      Background shell results carry a pid from the host process namespace; it is the process GROUP leader. To stop a background task completely, run `kill -- -<pid>` (the negative pid signals the whole group). Killing only `kill <pid>` stops the shell wrapper and leaves its children orphaned.
+      If kill reports "no such process" because this environment isolates process namespaces, ask user to escalate to danger-full access.
+
+# Workspace AGENTS.md / .cursor/rules and the DSH-assembled system prompt
+# (persona, harness identity) are uploaded as RequestContext.rules. Mid-turn
+# steer()/inject() use InjectContextAction on the live Run. Do not register a
+# session-title provider here: the host adapter owns NameAgent, and
+# ctx.sessionTitle.register() is process-global. Do not mount
+# dsh-agent-instructions: its on-read user-message injection never reaches
+# the Cursor agent loop.
+
+# Execution backend for the AskQuestion interaction bridge.
+- id: tool-ask-user
+  name: '@deepseek-ai/dsh-tool-ask-user'
+
+# The adapter package itself, in its preset role: attach the jobs controller
+# (so session-world `jobs.start` is allowed without mounting dsh-tool-jobs),
+# the harness identity section, the todos projection, and join shims. Native
+# read / write / delete / grep / glob / bash still run on the exec plane;
+# the shims only await that result for DSH cards. `config.plane: preset` selects the
+# preset branch of apply() — a row-level config flag rather than scopeOf(ctx),
+# which could silently mis-detect when a profile resolves a second copy of
+# @deepseek-ai/dsh-scope.
+- id: cursor-tools
+  name: ../../lib/index.js
+  config:
+    plane: preset
+  inject:
+    - tools
+    - jobs
+    - fs
+    - shell
+    - approval
+    - sandboxPolicy
+    - subprocess
+    - sessionProjections
+
+# Cursor owns the model window. An empty isolate group hides host
+# `ctx.compaction` (compaction-basic) for this preset only; ACP tools and
+# injects are denylisted on the Cursor wire, not unloaded from the host.
+# `/compact` stays the official command and calls this engine, which triggers
+# Cursor's summarize_action and writes the DSH compaction bracket back.
+- id: compaction
+  name: cordis:group
+  group: true
+  isolate:
+    compaction: true
+  config:
+    - id: cursor-compaction
+      name: ../../lib/index.js
+      config:
+        plane: compaction
+    - id: command-compact
+      name: '@deepseek-ai/dsh-command-compact'

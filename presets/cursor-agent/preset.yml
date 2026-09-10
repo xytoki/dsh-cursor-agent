@@ -1,0 +1,2 @@
+name: Cursor Agent
+description: 在DSH中使用原生 Cursor Agent Loop，包括Cursor标准工具、上下文压缩、自动标题，获得和Cursor一致的速度与体验。

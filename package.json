@@ -1,0 +1,139 @@
+{
+  "name": "@xytoki/dsh-cursor-agent",
+  "version": "0.6.0",
+  "packageManager": "pnpm@11.19.0",
+  "description": "Cursor Agent for DeepSeek Harness: browser login, token refresh, model discovery, and Cursor's server-side agent loop",
+  "type": "module",
+  "imports": {
+    "#generated/*": "./src/generated/*"
+  },
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/client.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./proto": {
+      "types": "./lib/proto.d.ts",
+      "default": "./lib/proto.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/**/*.js",
+    "lib/**/*.d.ts",
+    "presets/**",
+    "cordis.patch.yml",
+    "README.md",
+    "README_zh.md",
+    "AGENTS.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-runtime",
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-tool"
+      ],
+      "platform": "web"
+    }
+  },
+  "scripts": {
+    "build": "rslib",
+    "dev": "rslib --watch",
+    "format": "prettier --write .",
+    "lint": "rslint",
+    "test": "rstest",
+    "test:watch": "rstest --watch"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "cursor",
+    "cursor-agent",
+    "subscription",
+    "oauth",
+    "pkce"
+  ],
+  "author": "dsh-cursor-agent contributors",
+  "license": "MIT",
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "4.0.1",
+    "@deepseek-ai/dsh-client-connection": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-locale": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-runtime": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-conversation": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-primitives": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-settings": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-slots": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-tool": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-compaction": ">=0.1.0-rc.6",
+    "@deepseek-ai/dsh-credentials": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-llm": "^0.1.2-rc.1",
+    "@deepseek-ai/dsh-settings": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-tools": "0.1.0-rc.6",
+    "@deepseek-ai/schemastery": "^3.18.1",
+    "react": "^18.2.0"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "^1.10.1",
+    "@deepseek-ai/dsh-attachment-local": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-home-paths": "0.1.2-rc.1",
+    "@vscode/ripgrep": "^1.18.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "4.0.1",
+    "@deepseek-ai/dsh-client-connection": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-locale": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-runtime": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-conversation": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-primitives": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-settings": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-slots": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-tool": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-compaction": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-credentials": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-llm": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-settings": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-tools": "0.1.0-rc.6",
+    "@deepseek-ai/schemastery": "^3.18.1",
+    "@rsbuild/plugin-react": "^2.1.0",
+    "@rslib/core": "^1.0.0",
+    "@rslint/core": "^0.8.0",
+    "@rstest/adapter-rslib": "^0.11.10",
+    "@rstest/core": "^0.11.10",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^24.13.3",
+    "@types/react": "^18.3.27",
+    "@types/react-dom": "^18.3.7",
+    "happy-dom": "^20.12.0",
+    "prettier": "^3.9.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^6.0.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

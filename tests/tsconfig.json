@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "lib": ["DOM", "ES2022"],
+    "types": ["node", "@testing-library/jest-dom"]
+  },
+  "include": ["./**/*.ts", "./**/*.tsx"]
+}

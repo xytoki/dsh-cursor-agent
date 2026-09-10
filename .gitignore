@@ -1,0 +1,24 @@
+# Local
+.DS_Store
+*.local
+*.log*
+
+# Dist
+node_modules
+dist/
+lib/
+storybook-static
+doc_build/
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Rstack Skills
+
+.agents/skills/rslib*
+.agent/skills/rstest*
+
+# Plugin output
+lib/

@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "target": "ES2022",
+    "jsx": "react-jsx",
+    "rootDir": "./src",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "useDefineForClassFields": false,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "#generated/*": ["./src/generated-shims/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/generated-shims/**/*.d.ts"],
+  "exclude": ["src/client/**", "src/generated/**"]
+}
